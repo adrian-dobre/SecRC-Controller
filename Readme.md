@@ -10,7 +10,7 @@ This is an ESP32 based Weather Station that can measure:
 combined with an interface ([based on my SecRC library](https://github.com/adrian-dobre/SecRC)) to control [Seventilation's Sevi160-RC](https://ventilatie-recuperare.ro/produs/recuperator-caldura-sevi-160-rc-wireless-480/) Heat-Recovery Ventilation system via the [Sec-RC Control Panel](https://www.dezentrale-lueftung.com/en/shop/decentralised-ventilation-central-controller-sec-rc/).
 
 ![Sevi-160-RC](./resources/demo/sevi-160-rc.jpg?raw=true)
-![Sevi-160-RC](./resources/demo/sevi-160-rc.jpg?raw=true)
+![Sec-RC](./resources/demo/sec-rc.jpg?raw=true)
 
 It uses the following sensors:
 - MHZ-19C CO2 sensor
