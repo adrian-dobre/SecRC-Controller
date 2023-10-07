@@ -59,7 +59,8 @@ You can control the device via Rest API calls or use [the mobile application](ht
 
 ## What parts do I need?
 
-1. [ESP32 DevKit V1](https://www.banggood.com/Geekcreit-ESP32-WiFi+bluetooth-Development-Board-Ultra-Low-Power-Consumption-Dual-Cores-Pins-Unsoldered-p-1214159.html?cur_warehouse=CN) (or others, just make sure the pins are correctly mapped)
+1. [ESP32 DevKit-C]
+https://a.aliexpress.com/_mLvmlru) (or others, just make sure the pins are correctly mapped)
 2. [MHZ-19(C) CO2 sensor](https://www.banggood.com/MH-Z19-MH-Z19C-IR-Infrared-CO2-Sensor-Module-Carbon-Dioxide-Gas-Sensor-NDIR-for-CO2-Monitor-400-5000ppm-UART-PWM-Output-MH-Z19C-p-1788261.html?cur_warehouse=CN)
 3. [BME280 sensor](https://www.banggood.com/CJMCU-280E-BME280-High-Precision-Atmospheric-Pressure-Sensor-Module-Board-p-1897807.html?rmmds=myorder&cur_warehouse=CN)
 
