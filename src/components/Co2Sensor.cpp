@@ -1,18 +1,19 @@
 #include "Co2Sensor.h"
 
 Co2Data Co2Sensor::data;
-MHZ19 Co2Sensor::sensor;
+SensirionI2CScd4x Co2Sensor::sensor;
 
 void readCo2Sensor(void *sensor) {
     while (true) {
         vTaskDelay(10000);
-        Co2Sensor::data.ppm = ((MHZ19 *)sensor)->getCO2();
+        ((SensirionI2CScd4x *)sensor)->readMeasurement(Co2Sensor::data.ppm, Co2Sensor::data.temperature, Co2Sensor::data.humidity);
     }
 }
 
 void Co2Sensor::init() {
-    Serial2.begin(9600);
-    sensor.begin(Serial2);
-    sensor.autoCalibration(false);
+    Wire.begin(1,2);
+    sensor.begin(Wire);
+    sensor.stopPeriodicMeasurement();
+    sensor.startPeriodicMeasurement();
     xTaskCreate(readCo2Sensor, "Read CO2 Sensor", 2048, &sensor, 1, NULL);
 }

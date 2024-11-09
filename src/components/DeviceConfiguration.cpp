@@ -5,9 +5,7 @@ bool DeviceConfiguration::doubleResetDetected = false;
 Preferences DeviceConfiguration::preferences;
 
 void doubleResetTimeout(void* param) {
-    while (millis() < 20000) {
-        continue;
-    }
+    vTaskDelay(20000);
     DeviceConfiguration::preferences.begin("device");
     DeviceConfiguration::preferences.putBool("reset", false);
     DeviceConfiguration::preferences.end();

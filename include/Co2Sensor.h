@@ -1,14 +1,16 @@
 #ifndef CO2_SENSOR_H
 #define CO2_SENSOR_H
-#include "MHZ19.h"
+#include <SensirionI2CScd4x.h>
 
 struct Co2Data {
-    int ppm;
+    uint16_t ppm;
+    float temperature;
+    float humidity;
 };
 
 class Co2Sensor {
    private:
-    static MHZ19 sensor;
+    static SensirionI2CScd4x sensor;
 
    public:
     static void init();

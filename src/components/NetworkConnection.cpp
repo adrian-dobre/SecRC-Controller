@@ -46,24 +46,48 @@ void NetworkConnection::startAP(bool hasCredentials) {
 void NetworkConnection::startStation(String ssid, String password) {
     Serial.print("Starting in station mode.");
     int stationTimeout = millis() + 60000;
+    WiFi.disconnect();
+    WiFi.setAutoReconnect(true);
     WiFi.mode(WIFI_STA);
     WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
     WiFi.setHostname("sec-rc");
-    WiFi.begin(ssid.c_str(), password.c_str());
+    WiFi.onEvent([](WiFiEvent_t event, WiFiEventInfo_t info){
+        Serial.println("\nWiFi Connected!");
+        Serial.print("IP: ");
+        Serial.println(WiFi.localIP());
+    }, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_GOT_IP);
 
+    WiFi.begin(ssid.c_str(), password.c_str());
     while (WiFi.status() != WL_CONNECTED && millis() < stationTimeout) {
         Serial.print(".");
         delay(500);
     }
-    Serial.println("");
-    Serial.print("IP: ");
-    Serial.println(WiFi.localIP());
     if (millis() > stationTimeout) {
         Serial.println("Station mode connect timeout.");
         startAP(true);
     } else {
+        setupAutomaticReconnect();
         if (onConnectedCallback) {
             onConnectedCallback(false);
         }
     }
 }
+
+void NetworkConnection::setupAutomaticReconnect() {
+    WiFi.setAutoReconnect(false);
+    auto connecting = std::make_shared<bool>(false);
+    WiFi.onEvent([connecting](WiFiEvent_t event, WiFiEventInfo_t info){
+        if  (!*connecting){
+            Serial.print("WiFi Disconnected. Attempting reconnect.");
+            *connecting = true;
+        } else {
+            Serial.print(".");
+        }
+        WiFi.disconnect();
+        WiFi.begin();
+    }, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_DISCONNECTED);
+    WiFi.onEvent([connecting](WiFiEvent_t event, WiFiEventInfo_t info){
+        *connecting = false;
+    }, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_CONNECTED);
+}
+

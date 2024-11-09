@@ -61,22 +61,24 @@ void processSecRCCommands(void *secRCPanel) {
 }
 
 void SecRCDevice::init() {
-    SecRCIOConfig config = {.fanSpeed1LedPin = 34,
-                            .fanSpeed2LedPin = 35,
-                            .fanSpeed3LedPin = 36,
-                            .fanSpeed4LedPin = 39,
-                            .hrvModeLedPin = 33,
-                            .bypassModeLedPin = 32,
-                            .filterResetLedPin = 27,
-                            .powerButtonPin = 13,
-                            .fanSpeedButtonPin = 26,
-                            .hrvModeButtonPin = 25,
-                            .bypassModeButtonPin = 14,
-                            .filterResetButtonPin = 4};
+    SecRCIOConfig config = {.enablePin = 48,
+                            .fanSpeed1LedPin = 4,
+                            .fanSpeed2LedPin = 5,
+                            .fanSpeed3LedPin = 6,
+                            .fanSpeed4LedPin = 7,
+                            .hrvModeLedPin = 13,
+                            .bypassModeLedPin = 14,
+                            .filterResetLedPin = 21,
+                            .powerButtonPin = 10,
+                            .fanSpeedButtonPin = 11,
+                            .hrvModeButtonPin = 8,
+                            .bypassModeButtonPin = 9,
+                            .filterResetButtonPin = 12};
     secRC = new SecRC(config);
     xTaskCreate(updateSecRCStatus, "Update SecRC status", 2048, secRC, 1, NULL);
     xTaskCreate(processSecRCCommands, "Process SecRC commands", 2048, secRC, 1,
                 NULL);
+
 }
 
 void SecRCDevice::changeFanSpeed(SecRCFanSpeed fanSpeed) {

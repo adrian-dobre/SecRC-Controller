@@ -17,12 +17,12 @@ void recordDeviceHistory(void *sensor) {
         vTaskDelay(taskDelay);
         DeviceHistoryData dataPoint = {
             .co2ppm = Co2Sensor::data.ppm,
-            .temperature = ClimateSensor::data.temparature,
+            .temperature = ClimateSensor::data.temperature,
             .humidity = ClimateSensor::data.humidity,
             .pressure = ClimateSensor::data.pressure,
             .fanSpeed = SecRCDevice::status.fanSpeed,
             .ventilationMode = SecRCDevice::status.mode};
-        if (DeviceHistory::data.size() >= 144) {
+        if (DeviceHistory::data.size() >= 288) {
             DeviceHistory::data.pop_front();
         }
         DeviceHistory::data.push_back(dataPoint);

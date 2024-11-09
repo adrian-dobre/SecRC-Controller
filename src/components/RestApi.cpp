@@ -78,7 +78,7 @@ void RestApi::init(bool apMode) {
                 ClimateData climateData = ClimateSensor::data;
                 StaticJsonDocument<256> doc;
 
-                doc["climate"]["temperature"] = round2(climateData.temparature);
+                doc["climate"]["temperature"] = round2(climateData.temperature);
                 doc["climate"]["pressure"] = round2(climateData.pressure);
                 doc["climate"]["humidity"] = round2(climateData.humidity);
                 doc["climate"]["co2"] = round2(Co2Sensor::data.ppm);

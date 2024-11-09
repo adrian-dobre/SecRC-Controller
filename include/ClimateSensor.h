@@ -1,17 +1,17 @@
 #ifndef CLIMATE_SENSOR_H
 #define CLIMATE_SENSOR_H
-#include <BlueDot_BME280.h>
+#include <SensirionI2cSht4x.h>
 #include <Wire.h>
 
 struct ClimateData {
-    double temparature;
-    double humidity;
+    float temperature;
+    float humidity;
     double pressure;
 };
 
 class ClimateSensor {
    private:
-    static BlueDot_BME280 sensor;
+    static SensirionI2cSht4x sensor;
     static unsigned long int lastUpdate;
 
    public:
