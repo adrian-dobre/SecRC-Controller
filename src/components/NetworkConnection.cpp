@@ -48,9 +48,9 @@ void NetworkConnection::startStation(String ssid, String password) {
     int stationTimeout = millis() + 60000;
     WiFi.disconnect();
     WiFi.setAutoReconnect(true);
+    WiFi.setHostname("sec-rc");
     WiFi.mode(WIFI_STA);
     WiFi.config(INADDR_NONE, INADDR_NONE, INADDR_NONE, INADDR_NONE);
-    WiFi.setHostname("sec-rc");
     WiFi.onEvent([](WiFiEvent_t event, WiFiEventInfo_t info){
         Serial.println("\nWiFi Connected!");
         Serial.print("IP: ");
