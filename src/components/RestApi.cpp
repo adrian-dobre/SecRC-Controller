@@ -95,7 +95,7 @@ void RestApi::init(bool apMode) {
         WebServer::onAuthorized(
             "/sec-rc/history", HTTP_GET, [](AsyncWebServerRequest *request) {
                 std::deque<DeviceHistoryData> history = DeviceHistory::data;
-                DynamicJsonDocument doc = DynamicJsonDocument(27456);
+                DynamicJsonDocument doc = DynamicJsonDocument(50000);
 
                 JsonArray temperature =
                     doc["climate"].createNestedArray("temperature");
