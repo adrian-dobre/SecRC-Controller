@@ -1,4 +1,5 @@
 #include "DeviceConfiguration.h"
+#include "HTTPClient.h"
 
 class NetworkConnection {
    private:

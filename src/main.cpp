@@ -3,6 +3,8 @@
 #include "DeviceConfiguration.h"
 #include "NetworkConnection.h"
 #include "RestApi.h"
+#include "HTTPClient.h"
+
 
 void setup() {
     Serial.begin(115200);

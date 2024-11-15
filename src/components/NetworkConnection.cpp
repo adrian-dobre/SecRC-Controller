@@ -27,6 +27,56 @@ void accessPointTimeout(void* param) {
     }
 }
 
+bool isAddressReachable(String address) {
+    bool isReachable = false;
+    HTTPClient http;
+    http.setTimeout(5000);
+    http.setConnectTimeout(5000);
+    http.begin(address);
+    int httpCode = http.GET();
+    if (httpCode <= 0) {
+        Serial.printf("%s is unreachable.", address.c_str());
+    } else {
+        isReachable = true;
+        Serial.printf("GET %s replied with code %d.\n", address.c_str(), httpCode);
+    }
+    http.end();
+    return isReachable;
+}
+
+bool isGatewayReachable() {
+    String checkConnectivityAddress = "http://";
+    checkConnectivityAddress.concat(WiFi.gatewayIP().toString());
+    return isAddressReachable(checkConnectivityAddress);
+}
+
+bool isWebServerReachable() {
+    String checkConnectivityAddress = "http://";
+    checkConnectivityAddress.concat(WiFi.localIP().toString());
+    return isAddressReachable(checkConnectivityAddress);
+}
+bool isFirstNetworkCheck = true;
+void monitorNetworkConnection(void* param) {
+    while (true) {
+        if (isFirstNetworkCheck) {
+            vTaskDelay(120000);
+            isFirstNetworkCheck = false;
+        } else {
+            vTaskDelay(30000);
+        }
+        auto mode = WiFi.getMode();
+        auto status = WiFi.status();
+        if (mode == WIFI_MODE_STA && status == WL_CONNECTED) {
+            if (!isGatewayReachable() || !isWebServerReachable()) {
+                Serial.println("Restarting connection...");
+                WiFi.disconnect();
+            }
+        } else {
+            Serial.printf("Network mode: %d, status: %d. Skipping connection check.\n", mode, status);
+        }
+    }
+}
+
 void NetworkConnection::startAP(bool hasCredentials) {
     Serial.println("Starting in AP mode.");
     WiFi.mode(WIFI_AP);
@@ -74,6 +124,7 @@ void NetworkConnection::startStation(String ssid, String password) {
 }
 
 void NetworkConnection::setupAutomaticReconnect() {
+    xTaskCreate(monitorNetworkConnection, "Monitor Network Connection", 4096, NULL, 1, NULL);
     WiFi.setAutoReconnect(false);
     auto connecting = std::make_shared<bool>(false);
     WiFi.onEvent([connecting](WiFiEvent_t event, WiFiEventInfo_t info){
